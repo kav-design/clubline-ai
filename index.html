@@ -884,8 +884,8 @@ input[type="range"]::-moz-range-thumb { height: 24px; width: 24px; border-radius
   /* Section padding */
   section{padding-left:16px !important;padding-right:16px !important}
 
-  /* Hero */
-  section:first-of-type{padding-top:100px !important;padding-bottom:80px !important;min-height:auto !important}
+  /* Hero - keep min-height so activity strip doesn't overlap */
+  section:first-of-type{padding-top:100px !important;padding-bottom:100px !important}
 
   /* Voice grid - reverse so text comes first on mobile */
   #voiceGrid{gap:32px !important}
@@ -910,7 +910,7 @@ input[type="range"]::-moz-range-thumb { height: 24px; width: 24px; border-radius
   section{padding-top:64px !important;padding-bottom:64px !important}
 
   /* Hero adjustments */
-  section:first-of-type{padding-top:90px !important;padding-bottom:60px !important}
+  section:first-of-type{padding-top:90px !important;padding-bottom:110px !important;min-height:auto !important}
   section:first-of-type h1{font-size:2.2rem !important}
   section:first-of-type p{font-size:15px !important}
 
@@ -935,8 +935,8 @@ input[type="range"]::-moz-range-thumb { height: 24px; width: 24px; border-radius
   /* Footer */
   #footerGrid{gap:32px !important}
 
-  /* Activity strip text */
-  #activityScroll{gap:32px !important}
+  /* Activity strip */
+  #activityScroll{gap:24px !important;font-size:12px !important}
 
   /* Features grid span-2 items shouldn't span on mobile */
   #featuresGrid > div{grid-column:span 1 !important}
