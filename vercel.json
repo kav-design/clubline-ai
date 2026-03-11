@@ -1,3 +1,13 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/login", "destination": "https://clubline-ai-dashboard.vercel.app/login" },
+    { "source": "/signup", "destination": "https://clubline-ai-dashboard.vercel.app/signup" },
+    { "source": "/forgot-password", "destination": "https://clubline-ai-dashboard.vercel.app/forgot-password" },
+    { "source": "/reset-password", "destination": "https://clubline-ai-dashboard.vercel.app/reset-password" },
+    { "source": "/callback", "destination": "https://clubline-ai-dashboard.vercel.app/callback" },
+    { "source": "/demo", "destination": "https://clubline-ai-dashboard.vercel.app/demo" },
+    { "source": "/dashboard/:path*", "destination": "https://clubline-ai-dashboard.vercel.app/dashboard/:path*" },
+    { "source": "/api/:path*", "destination": "https://clubline-ai-dashboard.vercel.app/api/:path*" }
+  ]
 }
