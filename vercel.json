@@ -1,13 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    { "source": "/login", "destination": "https://clubline-ai-dashboard.vercel.app/login" },
-    { "source": "/signup", "destination": "https://clubline-ai-dashboard.vercel.app/signup" },
-    { "source": "/forgot-password", "destination": "https://clubline-ai-dashboard.vercel.app/forgot-password" },
-    { "source": "/reset-password", "destination": "https://clubline-ai-dashboard.vercel.app/reset-password" },
-    { "source": "/callback", "destination": "https://clubline-ai-dashboard.vercel.app/callback" },
-    { "source": "/demo", "destination": "https://clubline-ai-dashboard.vercel.app/demo" },
-    { "source": "/dashboard/:path*", "destination": "https://clubline-ai-dashboard.vercel.app/dashboard/:path*" },
-    { "source": "/api/:path*", "destination": "https://clubline-ai-dashboard.vercel.app/api/:path*" }
+  "redirects": [
+    { "source": "/login", "destination": "https://clubline-ai-dashboard.vercel.app/login", "permanent": false },
+    { "source": "/signup", "destination": "https://clubline-ai-dashboard.vercel.app/signup", "permanent": false },
+    { "source": "/forgot-password", "destination": "https://clubline-ai-dashboard.vercel.app/forgot-password", "permanent": false },
+    { "source": "/reset-password", "destination": "https://clubline-ai-dashboard.vercel.app/reset-password", "permanent": false },
+    { "source": "/callback", "destination": "https://clubline-ai-dashboard.vercel.app/callback", "permanent": false },
+    { "source": "/demo", "destination": "https://clubline-ai-dashboard.vercel.app/demo", "permanent": false },
+    { "source": "/dashboard/:path*", "destination": "https://clubline-ai-dashboard.vercel.app/dashboard/:path*", "permanent": false }
   ]
 }
