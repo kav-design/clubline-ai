@@ -233,12 +233,27 @@ input[type="range"]::-moz-range-thumb { height: 24px; width: 24px; border-radius
       <a href="#pricing" class="nav-link">Pricing</a>
       <a href="#faq" class="nav-link">FAQ</a>
     </div>
-    <!-- CTA -->
+    <!-- CTA + hamburger -->
     <div style="display:flex;align-items:center;gap:16px">
-      <a href="#contact" class="btn-nav">Book a Demo</a>
+      <a href="#contact" class="btn-nav" id="navCta">Book a Demo</a>
+      <button id="mobileMenuBtn" aria-label="Open menu" onclick="document.getElementById('mobileMenu').classList.add('open')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Mobile menu overlay -->
+<div id="mobileMenu">
+  <button id="mobileMenuClose" aria-label="Close menu" onclick="document.getElementById('mobileMenu').classList.remove('open')">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--charcoal)" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="#features" class="nav-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">Features</a>
+  <a href="#how-it-works" class="nav-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">How it Works</a>
+  <a href="#pricing" class="nav-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">Pricing</a>
+  <a href="#faq" class="nav-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">FAQ</a>
+  <a href="#contact" class="btn-nav" onclick="document.getElementById('mobileMenu').classList.remove('open')">Book a Demo</a>
+</div>
 
 <!-- ============================================ -->
 <!-- HERO -->
@@ -845,24 +860,105 @@ input[type="range"]::-moz-range-thumb { height: 24px; width: 24px; border-radius
 <!-- RESPONSIVE -->
 <!-- ============================================ -->
 <style>
+/* === MOBILE HAMBURGER === */
+#mobileMenuBtn{display:none;background:none;border:none;cursor:pointer;padding:8px}
+#mobileMenu{display:none;position:fixed;inset:0;z-index:100;background:rgba(250,248,244,0.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);flex-direction:column;align-items:center;justify-content:center;gap:32px}
+#mobileMenu.open{display:flex}
+#mobileMenu a.nav-link{font-size:1.25rem;color:var(--charcoal) !important;padding:12px 24px}
+#mobileMenu .btn-nav{font-size:1rem;padding:14px 32px}
+#mobileMenuClose{position:absolute;top:20px;right:24px;background:none;border:none;cursor:pointer;padding:8px}
+
 @media(max-width:968px){
   #convGrid,#voiceGrid{grid-template-columns:1fr !important}
   #stepsGrid{grid-template-columns:1fr !important}
   #onboardGrid{grid-template-columns:1fr 1fr !important}
   #featuresGrid{grid-template-columns:1fr 1fr !important}
-  #testimonialsGrid{grid-template-columns:1fr !important}
   #roiGrid{grid-template-columns:1fr !important}
   #pricingGrid{grid-template-columns:1fr !important}
-  #howStripGrid{flex-direction:column}
   #footerGrid{grid-template-columns:1fr 1fr !important}
   #desktopNav{display:none !important}
-  #dashSidebar{display:none !important}
+  #mobileMenuBtn{display:block !important}
+
+  /* Section padding */
+  section{padding-left:16px !important;padding-right:16px !important}
+
+  /* Hero */
+  section:first-of-type{padding-top:100px !important;padding-bottom:80px !important;min-height:auto !important}
+
+  /* Voice grid - reverse so text comes first on mobile */
+  #voiceGrid{gap:32px !important}
+
+  /* Conversation grid */
+  #convGrid{gap:32px !important}
+
+  /* Chat panel full width */
+  #convGrid > div:last-child > div{max-width:100% !important}
+
+  /* ROI stats row */
+  #roiGrid .reveal > div:last-child > div:first-child{grid-template-columns:1fr 1fr 1fr !important}
 }
+
 @media(max-width:640px){
   #featuresGrid{grid-template-columns:1fr !important}
   #onboardGrid{grid-template-columns:1fr !important}
   #footerGrid{grid-template-columns:1fr !important}
   #statsGrid{grid-template-columns:1fr 1fr !important}
+
+  /* Section padding tighter */
+  section{padding-top:64px !important;padding-bottom:64px !important}
+
+  /* Hero adjustments */
+  section:first-of-type{padding-top:90px !important;padding-bottom:60px !important}
+  section:first-of-type h1{font-size:2.2rem !important}
+  section:first-of-type p{font-size:15px !important}
+
+  /* Section headings */
+  h2{font-size:clamp(1.6rem,6vw,2.2rem) !important}
+
+  /* Proof points in hero - tighter */
+  #heroGrid > div > div:last-child{gap:0 !important}
+  #heroGrid > div > div:last-child > div:not(:first-child):not(:last-child){margin:0 16px !important}
+
+  /* Pricing cards */
+  #pricingGrid > div > div{padding:24px !important}
+  .price-btn-fill,.price-btn-outline{padding:12px !important}
+
+  /* ROI calculator */
+  #roiGrid > div:first-child{padding:20px !important}
+  #roiGrid > div:last-child > div:first-child{padding:24px !important}
+
+  /* ROI stats row stack on very small */
+  #roiGrid > div:last-child > div:nth-child(2){grid-template-columns:1fr !important}
+
+  /* Footer */
+  #footerGrid{gap:32px !important}
+
+  /* Activity strip text */
+  #activityScroll{gap:32px !important}
+
+  /* Features grid span-2 items shouldn't span on mobile */
+  #featuresGrid > div{grid-column:span 1 !important}
+
+  /* Steps grid items */
+  #stepsGrid > div{padding:24px !important}
+
+  /* Voice section bullets */
+  #voiceBullets p{font-size:13px !important}
+
+  /* Nav inner padding */
+  #navInner{padding-left:16px !important;padding-right:16px !important}
+
+  /* Chat panel height */
+  #chatMessages{height:320px !important}
+}
+
+@media(max-width:380px){
+  section:first-of-type h1{font-size:1.85rem !important}
+  #statsGrid{grid-template-columns:1fr !important}
+  #heroGrid > div > div:last-child{flex-wrap:wrap !important;justify-content:center !important;gap:16px !important}
+  #heroGrid > div > div:last-child > div:not(:first-child):not(:last-child){margin:0 !important}
+  /* Hide dividers in proof points */
+  #heroGrid > div > div:last-child > div[style*="width:1px"]{display:none !important}
 }
 </style>
 
@@ -882,6 +978,8 @@ window.addEventListener('scroll',()=>{
   nav.style.boxShadow=s?'0 1px 6px rgba(0,0,0,0.06)':'none';
   navInner.style.padding=s?'10px 24px':'16px 24px';
   navLogoSpan.style.color=s?'var(--charcoal)':'#fff';
+  const mobileBtn=document.getElementById('mobileMenuBtn');
+  if(mobileBtn)mobileBtn.querySelector('svg').style.stroke=s?'var(--charcoal)':'#fff';
   s?nav.classList.add('nav-scrolled'):nav.classList.remove('nav-scrolled');
 },{passive:true});
 
