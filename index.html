@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClubLine AI — AI Voice Reception for Golf Clubs</title>
+<meta name="description" content="ClubLine AI answers every call to your pro shop — books tee times, answers questions, and never puts a golfer on hold. Built for Australian golf clubs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root {
+  --cream: #faf8f4;
+  --cream-dark: #f5f1eb;
+  --charcoal: #1a1a1a;
+  --body: #555555;
+  --muted: #999999;
+  --light: #bbbbbb;
+  --border: #e8e2d9;
+  --terracotta: #B87333;
+  --terracotta-dark: #9A5F28;
+  --terracotta-light: #FDF4EC;
+  --teal: #7a9e93;
+  --teal-dark: #5f8577;
+  --teal-light: #e8f0ed;
+  --sage: #858E62;
+  --sage-light: #f0f2eb;
+  --gold: #c5a55a;
+  --gold-light: #f8f3e8;
+  --blue-muted: #81A4A9;
+  --blue-muted-light: #eaf0f1;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* === FLOWING PAGE GRADIENT === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 60% at 10% 5%, rgba(133,142,98,0.18), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 90% 10%, rgba(225,166,96,0.16), transparent 50%),
+    radial-gradient(ellipse 70% 45% at 80% 40%, rgba(184,115,51,0.08), transparent 45%),
+    radial-gradient(ellipse 90% 55% at 15% 50%, rgba(122,158,147,0.14), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 85% 70%, rgba(225,166,96,0.12), transparent 50%),
+    radial-gradient(ellipse 70% 45% at 20% 85%, rgba(133,142,98,0.10), transparent 45%);
+}
+body > * { position: relative; z-index: 1; }
+
+/* === GRADIENT WASHES === */
+.gradient-warm { background: linear-gradient(180deg, rgba(225,166,96,0.10) 0%, rgba(184,115,51,0.05) 50%, transparent 100%); }
+.gradient-cool { background: linear-gradient(180deg, rgba(122,158,147,0.08) 0%, rgba(133,142,98,0.05) 50%, transparent 100%); }
+.gradient-mixed { background: linear-gradient(135deg, rgba(133,142,98,0.08) 0%, rgba(225,166,96,0.06) 50%, rgba(122,158,147,0.08) 100%); }
+
+/* === ORGANIC SHAPES === */
+.organic-shape { border-radius: 50%; filter: blur(50px); position: absolute; pointer-events: none; z-index: 0; will-change: transform; }
+.organic-sage { background: radial-gradient(circle, rgba(133,142,98,0.4) 0%, transparent 70%); }
+.organic-gold { background: radial-gradient(circle, rgba(225,166,96,0.32) 0%, transparent 70%); }
+.organic-blue { background: radial-gradient(circle, rgba(129,164,169,0.3) 0%, transparent 70%); }
+.organic-teal { background: radial-gradient(circle, rgba(122,158,147,0.3) 0%, transparent 70%); }
+.organic-copper { background: radial-gradient(circle, rgba(184,115,51,0.15) 0%, transparent 70%); }
+
+/* === ANIMATIONS === */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes subtle-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+.float-slow { animation: subtle-float 8s ease-in-out infinite; }
+.float-medium { animation: subtle-float 6s ease-in-out infinite; animation-delay: -2s; }
+.float-fast { animation: subtle-float 5s ease-in-out infinite; animation-delay: -4s; }
+
+@keyframes hero-fade-in { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.hero-fade-in { animation: hero-fade-in 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+.hero-fade-in-delay { animation-delay: 0.15s; }
+
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+@keyframes waveform { 0%,100%{transform:scaleY(0.3)} 50%{transform:scaleY(1)} }
+.waveform-bar { animation: waveform 1.2s ease-in-out infinite; transform-origin: bottom; }
+
+@keyframes typing-bounce { 0%,60%,100%{transform:translateY(0);opacity:0.3} 30%{transform:translateY(-4px);opacity:1} }
+.typing-dot { animation: typing-bounce 1.4s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes msg-in-left { from{opacity:0;transform:translateX(-16px) translateY(6px)} to{opacity:1;transform:translateX(0) translateY(0)} }
+@keyframes msg-in-right { from{opacity:0;transform:translateX(16px) translateY(6px)} to{opacity:1;transform:translateX(0) translateY(0)} }
+.msg-left { animation: msg-in-left 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+.msg-right { animation: msg-in-right 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+@keyframes bubble-in { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.bubble-in { opacity: 0; animation: bubble-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+@keyframes pulse-ring { 0%{transform:scale(0.8);opacity:0.8} 100%{transform:scale(2.2);opacity:0} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+
+/* === GRADIENT TEXT === */
+.gradient-text-copper {
+  background: linear-gradient(135deg, var(--terracotta), var(--gold), var(--terracotta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === DIVIDERS === */
+.section-divider { height: 1px; background: var(--border); max-width: 80rem; margin: 0 auto; }
+.section-divider-gradient { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); max-width: 80rem; margin: 0 auto; }
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 3px; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* === RANGE SLIDER === */
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: var(--border); border-radius: 3px; outline: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--terracotta); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+input[type="range"]::-moz-range-thumb { height: 24px; width: 24px; border-radius: 50%; background: var(--terracotta); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+
+/* === TILT CARD === */
+.tilt-card { transition: all 0.3s ease-out; }
+
+/* === BUTTON HOVERS === */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px; border-radius: 9999px;
+  background: var(--terracotta); padding: 16px 32px; font-size: 15px; font-weight: 600;
+  color: white; text-decoration: none; transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  border: none; cursor: pointer; font-family: var(--font-sans);
+}
+.btn-primary:hover { background: var(--terracotta-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,115,51,0.25); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px;
+  border: 2px solid var(--charcoal); padding: 14px 32px; font-size: 15px; font-weight: 600;
+  color: var(--charcoal); text-decoration: none; transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  background: none; cursor: pointer; font-family: var(--font-sans);
+}
+.btn-secondary:hover { background: var(--charcoal); color: white; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,26,26,0.15); }
+
+.btn-nav {
+  border-radius: 9999px; background: var(--terracotta); padding: 10px 20px;
+  font-size: 0.875rem; font-weight: 600; color: white; text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.btn-nav:hover { background: var(--terracotta-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(184,115,51,0.2); }
+
+.btn-cta-dark {
+  display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px;
+  background: var(--terracotta); padding: 10px 20px; font-size: 14px; font-weight: 600;
+  color: white; text-decoration: none; white-space: nowrap; transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.btn-cta-dark:hover { background: var(--terracotta-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(184,115,51,0.2); }
+
+/* === CARD HOVERS === */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+}
+
+.pricing-card-hover {
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.pricing-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+/* === PRICING BUTTON HOVERS === */
+.price-btn-outline {
+  display: flex; width: 100%; align-items: center; justify-content: center;
+  border-radius: 9999px; padding: 14px; font-size: 14px; font-weight: 600;
+  transition: all 0.3s; margin-bottom: 28px; text-decoration: none;
+  background: none; border: 2px solid var(--charcoal); color: var(--charcoal);
+  font-family: var(--font-sans); cursor: pointer;
+}
+.price-btn-outline:hover { background: var(--charcoal); color: white; }
+
+.price-btn-fill {
+  display: flex; width: 100%; align-items: center; justify-content: center;
+  border-radius: 9999px; padding: 14px; font-size: 14px; font-weight: 600;
+  transition: all 0.3s; margin-bottom: 28px; text-decoration: none;
+  background: var(--terracotta); color: white; border: none;
+  font-family: var(--font-sans); cursor: pointer;
+}
+.price-btn-fill:hover { background: var(--terracotta-dark); box-shadow: 0 8px 24px rgba(184,115,51,0.25); }
+
+/* === NAV LINK UNDERLINE === */
+.nav-link { position: relative; padding: 8px 16px; font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
+.nav-link:hover { color: #ffffff; }
+.nav-scrolled .nav-link { color: var(--body); }
+.nav-scrolled .nav-link:hover { color: var(--charcoal); }
+.nav-link::after { content: ''; position: absolute; bottom: 2px; left: 50%; width: 0; height: 2px; background: var(--terracotta); border-radius: 1px; transform: translateX(-50%); transition: width 0.3s cubic-bezier(0.16,1,0.3,1); }
+.nav-link:hover::after { width: 60%; }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- NAV -->
+<!-- ============================================ -->
+<nav id="nav" style="position:fixed;top:0;left:0;right:0;z-index:50;transition:background 0.4s, box-shadow 0.4s">
+  <div style="max-width:80rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;transition:padding 0.3s" id="navInner">
+    <!-- Logo -->
+    <a href="#" id="navLogo" style="display:flex;align-items:center;gap:10px;text-decoration:none;transition:color 0.3s">
+      <span style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:-0.01em;color:#fff">Club<span style="color:var(--terracotta)">Line</span> <span style="font-family:var(--font-sans);font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);vertical-align:super;margin-left:2px">AI</span></span>
+    </a>
+    <!-- Desktop links -->
+    <div id="desktopNav" style="display:flex;align-items:center;gap:4px">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how-it-works" class="nav-link">How it Works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+    </div>
+    <!-- CTA -->
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="#contact" class="btn-nav">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================ -->
+<!-- HERO -->
+<!-- ============================================ -->
+<section style="position:relative;padding:140px 24px 100px;overflow:hidden;min-height:100vh;display:flex;align-items:center">
+  <!-- Video background -->
+  <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0">
+    <source src="hero-bg.mp4" type="video/mp4">
+  </video>
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:1"></div>
+
+  <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:0 24px">
+    <div style="text-align:center;max-width:700px;margin:0 auto" id="heroGrid">
+      <div class="hero-fade-in">
+        <!-- Typewriter -->
+        <p style="margin-bottom:20px;font-size:0.875rem;font-weight:500;letter-spacing:0.02em;color:rgba(255,255,255,0.6)">
+          Your AI <span id="roleTyper" style="color:var(--terracotta)"></span><span style="display:inline-block;width:2px;height:1.1em;background:var(--terracotta);vertical-align:middle;margin-left:1px;animation:cursor-blink 1s step-end infinite" id="cursor"></span>
+        </p>
+
+        <h1 style="margin-bottom:24px;font-size:clamp(2.75rem,5vw,3.75rem);font-weight:700;line-height:1.08;letter-spacing:-0.02em;color:#ffffff">
+          Turn missed calls into<br>
+          <span class="gradient-text-copper" style="filter:brightness(1.4)">booked tee times.</span>
+        </h1>
+
+        <p style="max-width:520px;margin:0 auto 40px;font-size:17px;line-height:1.65;color:rgba(255,255,255,0.75)">
+          ClubLine AI answers your pro shop phone in 2 seconds, books tee times, answers member questions, and collects feedback &mdash; 24/7, on autopilot.
+        </p>
+
+        <!-- CTAs -->
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center">
+          <a href="#contact" class="btn-primary">
+            Book a Demo
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#how-it-works" class="btn-secondary" style="border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.9)">
+            See How It Works
+          </a>
+        </div>
+
+        <!-- Proof points -->
+        <div style="margin-top:48px;display:flex;align-items:center;justify-content:center;gap:0">
+          <div>
+            <p style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--teal)">2s</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.45)">Response time</p>
+          </div>
+          <div style="margin:0 28px;height:28px;width:1px;background:rgba(255,255,255,0.15)"></div>
+          <div>
+            <p style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--terracotta);filter:brightness(1.3)">24/7</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.45)">Availability</p>
+          </div>
+          <div style="margin:0 28px;height:28px;width:1px;background:rgba(255,255,255,0.15)"></div>
+          <div>
+            <p style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:#ffffff">3x</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.45)">More bookings</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live activity strip — inside hero, over video -->
+  <div style="position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 24px;border-top:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite"></div>
+      <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5)">ClubLine Live Activity</span>
+    </div>
+    <div style="-webkit-mask-image:linear-gradient(to right,transparent,black 15%,black 85%,transparent);mask-image:linear-gradient(to right,transparent,black 15%,black 85%,transparent)">
+      <div id="activityScroll" style="display:flex;width:max-content;gap:48px;animation:marquee 60s linear infinite;align-items:center"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- THE PROBLEM (Speed to Lead) -->
+<!-- ============================================ -->
+<section style="position:relative;overflow:hidden;padding:96px 24px 96px">
+  <div class="organic-shape organic-copper" style="position:absolute;right:-192px;top:0;width:500px;height:500px"></div>
+  <div class="organic-shape organic-teal" style="position:absolute;left:-160px;bottom:0;width:400px;height:400px"></div>
+
+  <div style="position:relative;z-index:10;max-width:64rem;margin:0 auto;padding:0 24px">
+    <div class="reveal" style="text-align:center">
+      <p style="margin-bottom:20px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">The Problem</p>
+      <h2 style="font-size:clamp(2.2rem,5vw,3.5rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--charcoal)">
+        Your club is losing <span style="color:var(--terracotta)">$343K a year</span> to voicemail.
+      </h2>
+      <p style="max-width:640px;margin:24px auto 0;font-size:1.125rem;line-height:1.65;color:var(--body)">
+        15 missed calls a day &times; 38% that are real bookings &times; $165 per group. That&rsquo;s over 2,000 tee times going to your competitors &mdash; every year.
+      </p>
+    </div>
+
+    <!-- Stats row -->
+    <div style="margin-top:80px" id="statsRow">
+      <div class="reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0" id="statsGrid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:80px;text-align:center;font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">
+      ClubLine responds in <span style="color:var(--terracotta)">2 seconds.</span> Your competitor doesn&rsquo;t.
+    </p>
+  </div>
+</section>
+
+<div class="section-divider-gradient"></div>
+
+<!-- ============================================ -->
+<!-- HOW IT WORKS -->
+<!-- ============================================ -->
+<section id="how-it-works" class="gradient-cool" style="position:relative;overflow:hidden;padding:96px 24px">
+  <div class="organic-shape organic-teal" style="position:absolute;right:-160px;top:40px;width:450px;height:450px"></div>
+  <div class="organic-shape organic-sage" style="position:absolute;left:-128px;bottom:0;width:400px;height:400px"></div>
+
+  <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:0 24px">
+    <div class="reveal" style="text-align:center;margin-bottom:64px">
+      <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">How it works</p>
+      <h2 style="margin-bottom:20px;font-size:clamp(2.2rem,5vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--charcoal)">Three steps. Zero missed bookings.</h2>
+      <p style="max-width:480px;margin:0 auto;font-size:1.125rem;color:var(--body)">Set up in days, not months. Every missed call becomes a conversation, every conversation becomes a booking.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px" id="stepsGrid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- VOICE AGENT -->
+<!-- ============================================ -->
+<section style="position:relative;overflow:hidden;background:var(--charcoal);padding:96px 24px">
+  <div class="organic-shape" style="position:absolute;right:-160px;top:0;width:500px;height:500px;opacity:0.3;background:radial-gradient(circle,rgba(122,158,147,0.3) 0%,transparent 70%)"></div>
+
+  <div style="position:relative;max-width:80rem;margin:0 auto;padding:0 24px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center" id="voiceGrid">
+      <!-- Left -->
+      <div class="reveal">
+        <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Your Club, Your Voice</p>
+        <h2 style="margin-bottom:20px;font-size:clamp(2.2rem,5vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:white">
+          Sounds like your club.<br><span style="color:var(--terracotta)">Because it is.</span>
+        </h2>
+        <p style="max-width:400px;margin-bottom:32px;font-size:17px;line-height:1.65;color:rgba(255,255,255,0.7)">
+          ClubLine sounds like your club &mdash; trained on your policies, your pricing, your tone. It greets golfers by name, knows your tee sheet, and represents your brand the way you want it.
+        </p>
+        <a href="#contact" class="btn-primary" style="margin-bottom:40px">
+          <span style="font-size:18px">&#9654;</span> Listen to a sample call
+        </a>
+        <!-- Bullets -->
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:32px" id="voiceBullets"></div>
+      </div>
+
+      <!-- Right - Live call card -->
+      <div class="reveal" style="transition-delay:150ms">
+        <div style="border-radius:16px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);padding:32px;backdrop-filter:blur(8px)">
+          <div style="margin-bottom:24px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:8px;height:8px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite"></div>
+                <span style="font-size:14px;font-weight:600;color:#4ade80">Live Call</span>
+              </div>
+              <span style="font-family:monospace;font-size:14px;color:rgba(255,255,255,0.5)" id="liveTime">0:00</span>
+            </div>
+            <p style="margin-top:4px;font-size:14px;color:rgba(255,255,255,0.4)">ClubLine AI &rarr; Golfer</p>
+          </div>
+          <!-- Waveform -->
+          <div id="waveform" style="display:flex;height:140px;align-items:end;justify-content:space-between;padding:0 8px"></div>
+          <!-- Transcript -->
+          <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px">
+            <p style="margin-bottom:12px;font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Live Transcript</p>
+            <div id="liveTranscript" style="display:flex;flex-direction:column;gap:10px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CONVERSATION DEMO -->
+<!-- ============================================ -->
+<section class="gradient-warm" style="position:relative;overflow:hidden;padding:96px 24px">
+  <div class="organic-shape organic-gold" style="position:absolute;left:-160px;top:80px;width:500px;height:500px"></div>
+  <div class="organic-shape organic-copper" style="position:absolute;right:-128px;bottom:40px;width:400px;height:400px"></div>
+
+  <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:0 24px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center" id="convGrid">
+      <!-- Left -->
+      <div class="reveal">
+        <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">See it in action</p>
+        <h2 style="margin-bottom:20px;font-size:clamp(2.2rem,5vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--charcoal)">
+          Real conversations.<br><span style="color:var(--terracotta)">Real bookings.</span>
+        </h2>
+        <p style="max-width:400px;margin-bottom:40px;font-size:1.125rem;line-height:1.65;color:var(--body)">
+          ClubLine doesn&rsquo;t sound like a chatbot. It handles inquiries, suggests times, and books tee times &mdash; naturally.
+        </p>
+        <!-- Tabs -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="scenarioTabs"></div>
+      </div>
+
+      <!-- Right - Chat panel -->
+      <div class="reveal" style="transition-delay:150ms">
+        <div style="max-width:420px;margin:0 auto;width:100%">
+          <div style="overflow:hidden;border-radius:16px;border:1px solid var(--border);background:white;box-shadow:0 8px 30px rgba(0,0,0,0.08)">
+            <!-- Header -->
+            <div style="display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);padding:16px 20px">
+              <div style="position:relative">
+                <div style="width:40px;height:40px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white">CL</div>
+                <div style="position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;border:2px solid white;background:var(--teal)"></div>
+              </div>
+              <div>
+                <p style="font-size:14px;font-weight:600;color:var(--charcoal)">ClubLine AI</p>
+                <p style="font-size:12px;color:var(--muted)" id="chatStatus">Responding to missed call</p>
+              </div>
+            </div>
+            <!-- Messages -->
+            <div id="chatMessages" class="no-scrollbar" style="height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:20px"></div>
+            <!-- Input bar -->
+            <div style="display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);padding:12px 16px">
+              <div style="flex:1;border-radius:9999px;border:1px solid var(--border);background:var(--cream);padding:10px 16px">
+                <p style="font-size:12px;color:var(--muted)">Message...</p>
+              </div>
+              <button style="width:36px;height:36px;border-radius:50%;background:var(--teal);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider-gradient"></div>
+
+<!-- ============================================ -->
+<!-- FEATURES -->
+<!-- ============================================ -->
+<section id="features" style="position:relative;overflow:hidden;padding:96px 24px">
+  <div class="organic-shape organic-gold" style="position:absolute;left:-160px;top:80px;width:500px;height:500px"></div>
+  <div class="organic-shape organic-sage" style="position:absolute;right:-128px;bottom:160px;width:450px;height:450px"></div>
+
+  <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:0 24px">
+    <div class="reveal" style="text-align:center;margin-bottom:64px">
+      <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">Capabilities</p>
+      <h2 style="margin-bottom:20px;font-size:clamp(2.2rem,5vw,3rem);font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">
+        One AI receptionist. <span style="color:var(--terracotta)">Every call covered.</span>
+      </h2>
+      <p style="max-width:480px;margin:0 auto;font-size:1.125rem;line-height:1.65;color:var(--body)">
+        From the first ring to the confirmed booking &mdash; ClubLine handles the entire caller journey.
+      </p>
+    </div>
+    <div id="featuresGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px"></div>
+  </div>
+</section>
+
+<div class="section-divider-gradient"></div>
+
+<!-- ============================================ -->
+<!-- DASHBOARD PREVIEW -->
+
+<!-- ============================================ -->
+<!-- ROI CALCULATOR -->
+<!-- ============================================ -->
+<section style="position:relative;overflow:hidden;padding:96px 24px">
+  <div class="organic-shape organic-gold" style="position:absolute;right:-160px;top:40px;width:450px;height:450px"></div>
+  <div class="organic-shape organic-copper" style="position:absolute;left:-128px;bottom:0;width:400px;height:400px"></div>
+
+  <div style="position:relative;z-index:10;max-width:72rem;margin:0 auto;padding:0 24px">
+    <div class="reveal" style="text-align:center;margin-bottom:64px">
+      <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">ROI Calculator</p>
+      <h2 style="font-size:clamp(2.2rem,5vw,3rem);font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">
+        See what ClubLine could <span class="gradient-text-copper">save you</span>
+      </h2>
+      <p style="max-width:520px;margin:16px auto 0;font-size:1.0625rem;line-height:1.65;color:var(--body)">Enter your club&rsquo;s numbers. We&rsquo;ll show you how much revenue you&rsquo;re leaving on the table.</p>
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:2fr 3fr;gap:32px;align-items:stretch" id="roiGrid">
+      <!-- Left - Inputs -->
+      <div style="display:flex;flex-direction:column;gap:0;border-radius:16px;border:1px solid var(--border);background:white;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+
+        <!-- Slider 1: Missed calls -->
+        <div style="margin-bottom:28px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <p style="font-size:14px;font-weight:600;color:var(--charcoal)">Missed calls per day</p>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px">Calls that go to voicemail or ring out</p>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:4px">
+              <span id="callsVal" style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">15</span>
+              <span style="font-size:12px;color:var(--muted)">per day</span>
+            </div>
+          </div>
+          <div style="position:relative;margin-bottom:6px">
+            <div style="position:relative;height:6px;width:100%;border-radius:3px;background:var(--cream-dark)">
+              <div id="callsFill" style="position:absolute;left:0;top:0;height:100%;border-radius:3px;background:linear-gradient(90deg,rgba(184,115,51,0.6),var(--terracotta));transition:width 0.15s;width:28%"></div>
+            </div>
+            <div id="callsThumb" style="pointer-events:none;position:absolute;top:50%;transform:translate(-50%,-50%);left:28%">
+              <div style="width:18px;height:18px;border-radius:50%;border:3px solid white;background:var(--terracotta);box-shadow:0 2px 6px rgba(0,0,0,0.15)"></div>
+            </div>
+            <input type="range" min="2" max="60" value="15" id="callsSlider" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>2</span><span>30</span><span>60</span></div>
+        </div>
+
+        <!-- Slider 2: Green fee -->
+        <div style="margin-bottom:28px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <p style="font-size:14px;font-weight:600;color:var(--charcoal)">Average green fee</p>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px">18-hole rate for a visiting golfer</p>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:2px">
+              <span style="font-size:1rem;font-weight:700;color:var(--charcoal)">$</span>
+              <span id="feeVal" style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">55</span>
+            </div>
+          </div>
+          <div style="position:relative;margin-bottom:6px">
+            <div style="position:relative;height:6px;width:100%;border-radius:3px;background:var(--cream-dark)">
+              <div id="feeFill" style="position:absolute;left:0;top:0;height:100%;border-radius:3px;background:linear-gradient(90deg,rgba(122,158,147,0.5),var(--teal));transition:width 0.15s;width:30%"></div>
+            </div>
+            <div id="feeThumb" style="pointer-events:none;position:absolute;top:50%;transform:translate(-50%,-50%);left:30%">
+              <div style="width:18px;height:18px;border-radius:50%;border:3px solid white;background:var(--teal);box-shadow:0 2px 6px rgba(0,0,0,0.15)"></div>
+            </div>
+            <input type="range" min="25" max="150" value="55" step="5" id="feeSlider" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>$25</span><span>$85</span><span>$150</span></div>
+        </div>
+
+        <!-- Slider 3: Players per booking -->
+        <div style="margin-bottom:28px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <p style="font-size:14px;font-weight:600;color:var(--charcoal)">Avg. players per booking</p>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px">Most bookings are groups of 2&ndash;4</p>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:4px">
+              <span id="playersVal" style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">3</span>
+              <span style="font-size:12px;color:var(--muted)">players</span>
+            </div>
+          </div>
+          <div style="position:relative;margin-bottom:6px">
+            <div style="position:relative;height:6px;width:100%;border-radius:3px;background:var(--cream-dark)">
+              <div id="playersFill" style="position:absolute;left:0;top:0;height:100%;border-radius:3px;background:linear-gradient(90deg,rgba(197,165,90,0.5),var(--gold));transition:width 0.15s;width:66%"></div>
+            </div>
+            <div id="playersThumb" style="pointer-events:none;position:absolute;top:50%;transform:translate(-50%,-50%);left:66%">
+              <div style="width:18px;height:18px;border-radius:50%;border:3px solid white;background:var(--gold);box-shadow:0 2px 6px rgba(0,0,0,0.15)"></div>
+            </div>
+            <input type="range" min="1" max="4" value="3" id="playersSlider" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+        </div>
+
+        <!-- Lost revenue callout -->
+        <div style="margin-top:auto;border-radius:12px;background:rgba(184,115,51,0.06);border:1px solid rgba(184,115,51,0.12);padding:20px">
+          <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terracotta)">You&rsquo;re losing</p>
+          <p style="margin-top:6px;font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)" id="lostVal">$68,640<span style="font-size:14px;font-weight:400;color:var(--muted)">/year</span></p>
+          <p style="margin-top:4px;font-size:12px;color:var(--body)" id="lostBreakdown">That&rsquo;s ~405 lost bookings going to voicemail</p>
+        </div>
+      </div>
+
+      <!-- Right - Results -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <!-- Hero card -->
+        <div style="border-radius:16px;border:1px solid rgba(122,158,147,0.2);background:var(--charcoal);padding:32px 40px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <p style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal)">With ClubLine</p>
+          </div>
+          <p style="margin-top:12px;font-size:clamp(2.4rem,4.5vw,3.5rem);font-weight:700;letter-spacing:-0.02em;color:white" id="recoveredVal">$30,888</p>
+          <p style="margin-top:8px;font-size:14px;color:rgba(255,255,255,0.5)">Revenue recovered per year</p>
+          <div style="margin-top:24px;display:flex;align-items:center;gap:16px">
+            <div style="flex:1;height:8px;overflow:hidden;border-radius:4px;background:rgba(255,255,255,0.1)">
+              <div id="roiBarFill" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),rgba(122,158,147,0.6));transition:width 0.8s cubic-bezier(0.16,1,0.3,1);width:45%"></div>
+            </div>
+            <span id="roiPct" style="font-size:14px;font-weight:600;color:var(--teal);white-space:nowrap">45% recovered</span>
+          </div>
+        </div>
+        <!-- Stats row -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div style="border-radius:16px;border:1px solid var(--border);background:white;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+            <p style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)" id="bookingsVal">182</p>
+            <p style="margin-top:4px;font-size:12px;color:var(--muted)">Tee times recovered</p>
+          </div>
+          <div style="border-radius:16px;border:1px solid var(--border);background:white;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+            <p style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--teal)" id="roiXVal">5x</p>
+            <p style="margin-top:4px;font-size:12px;color:var(--muted)">Return on investment</p>
+          </div>
+          <div style="border-radius:16px;border:1px solid var(--border);background:white;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+            <p style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--terracotta)" id="netVal">$2,075</p>
+            <p style="margin-top:4px;font-size:12px;color:var(--muted)">Net gain per month</p>
+          </div>
+        </div>
+        <!-- Math breakdown -->
+        <div style="border-radius:16px;border:1px solid var(--border);background:white;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+          <p style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">How we calculate this</p>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--body)" id="mathBreakdown">
+          </div>
+        </div>
+        <!-- CTA -->
+        <div style="display:flex;align-items:center;justify-content:space-between;border-radius:16px;border:1px solid var(--border);background:white;padding:20px 24px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+          <div>
+            <p style="font-size:14px;font-weight:600;color:var(--charcoal)">ClubLine Pro &mdash; $499/mo + top-up credits</p>
+            <p style="font-size:12px;color:var(--muted);margin-top:2px" id="paybackNote">Pays for itself with ~3 recovered bookings per month.</p>
+          </div>
+          <a href="#contact" class="btn-cta-dark">Book a Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider-gradient"></div>
+
+<!-- ============================================ -->
+<!-- PRICING -->
+<!-- ============================================ -->
+<section id="pricing" class="gradient-cool" style="position:relative;overflow:hidden;padding:96px 24px">
+  <div class="organic-shape organic-teal" style="position:absolute;right:-192px;top:0;width:500px;height:500px"></div>
+  <div class="organic-shape organic-sage" style="position:absolute;left:-160px;bottom:80px;width:450px;height:450px"></div>
+
+  <div style="position:relative;z-index:10;max-width:80rem;margin:0 auto;padding:0 24px">
+    <div class="reveal" style="text-align:center;margin-bottom:64px">
+      <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">Pricing</p>
+      <h2 style="margin-bottom:20px;font-size:clamp(2.2rem,5vw,3rem);font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">
+        Less than a part-time receptionist.<br><span style="color:var(--terracotta)">Works 10x harder.</span>
+      </h2>
+      <p style="max-width:520px;margin:0 auto;font-size:1.0625rem;line-height:1.65;color:var(--body)">Transparent pricing. No lock-in contracts. Top up your credit balance anytime &mdash; usage is charged at cost with no markup.</p>
+    </div>
+
+
+    <!-- Two pricing cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" id="pricingGrid">
+
+      <!-- Plan 1: ClubLine Pro -->
+      <div class="reveal tilt-card pricing-card-hover" style="position:relative;overflow:hidden;border-radius:16px;border:2px solid var(--charcoal);background:white;box-shadow:0 8px 30px rgba(0,0,0,0.08)">
+        <div style="padding:32px">
+          <div style="display:inline-flex;border-radius:9999px;background:var(--charcoal);padding:4px 12px;margin-bottom:16px"><span style="font-size:12px;font-weight:700;text-transform:uppercase;color:white">Most Clubs</span></div>
+          <div style="margin-bottom:16px;width:40px;height:40px;border-radius:12px;background:var(--terracotta-light);display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--terracotta)"></div></div>
+          <h3 style="font-size:1.25rem;font-weight:700;color:var(--charcoal)">ClubLine Pro</h3>
+          <p style="margin-top:4px;font-size:14px;color:var(--body)">Full AI receptionist + prepaid credit top-ups.</p>
+          <div style="margin:24px 0;display:flex;align-items:baseline;gap:4px">
+            <span style="font-size:3rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">$499</span>
+            <span style="font-size:14px;color:var(--muted)">/mo + top-ups</span>
+          </div>
+          <a href="#contact" class="price-btn-fill">Get Started</a>
+
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px" id="proFeatures"></ul>
+
+          <!-- Usage calculator -->
+          <div style="margin-top:28px;border-radius:12px;background:var(--cream);border:1px solid var(--border);padding:20px">
+            <p style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Estimate your top-up</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <p style="font-size:13px;color:var(--body)">Calls answered per month</p>
+              <div style="display:flex;align-items:baseline;gap:4px">
+                <span id="usageCallsVal" style="font-size:16px;font-weight:700;color:var(--charcoal)">300</span>
+              </div>
+            </div>
+            <div style="position:relative;margin-bottom:16px">
+              <div style="position:relative;height:4px;width:100%;border-radius:2px;background:var(--cream-dark)">
+                <div id="usageCallsFill" style="position:absolute;left:0;top:0;height:100%;border-radius:2px;background:var(--terracotta);transition:width 0.15s;width:28%"></div>
+              </div>
+              <input type="range" min="50" max="1500" value="300" step="50" id="usageCallsSlider" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
+            </div>
+
+            <!-- Usage line items -->
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-bottom:12px" id="usageLineItems">
+            </div>
+            <div style="height:1px;background:var(--border);margin:12px 0"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <p style="font-size:13px;font-weight:600;color:var(--charcoal)">Estimated monthly cost</p>
+              <p style="font-size:18px;font-weight:700;color:var(--charcoal)" id="usageTotalVal">$499 + $54</p>
+            </div>
+            <p style="margin-top:4px;font-size:11px;color:var(--muted)">Top up your credit balance anytime. Credits are consumed at cost &mdash; no surprises.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan 2: Enterprise -->
+      <div class="reveal tilt-card pricing-card-hover" style="position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--border);background:white;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition-delay:100ms">
+        <div style="padding:32px">
+          <div style="margin-bottom:16px;margin-top:32px;width:40px;height:40px;border-radius:12px;background:var(--teal-light);display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal)"></div></div>
+          <h3 style="font-size:1.25rem;font-weight:700;color:var(--charcoal)">Enterprise</h3>
+          <p style="margin-top:4px;font-size:14px;color:var(--body)">Multi-course groups &amp; custom automations.</p>
+          <div style="margin:24px 0;display:flex;align-items:baseline;gap:4px">
+            <span style="font-size:3rem;font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">Custom</span>
+          </div>
+          <a href="#contact" class="price-btn-outline">Talk to Sales</a>
+
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px" id="entFeatures"></ul>
+        </div>
+      </div>
+    </div>
+
+    <p class="reveal" style="text-align:center;margin-top:48px;font-size:14px;color:var(--muted)">30-day money-back guarantee &mdash; if ClubLine doesn&rsquo;t capture more bookings in 30 days, full refund. Cancel any time.</p>
+  </div>
+</section>
+
+<div class="section-divider-gradient"></div>
+
+<!-- ============================================ -->
+<!-- FAQ -->
+<!-- ============================================ -->
+<section id="faq" style="padding:96px 24px">
+  <div style="max-width:48rem;margin:0 auto;padding:0 24px">
+    <div class="reveal" style="text-align:center;margin-bottom:48px">
+      <p style="margin-bottom:16px;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terracotta)">FAQ</p>
+      <h2 style="font-size:clamp(2.2rem,5vw,3rem);font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">Got questions?</h2>
+    </div>
+    <div class="reveal" id="faqCard" style="border-radius:16px;border:1px solid var(--border);background:white;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,0.04)"></div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- FINAL CTA -->
+<!-- ============================================ -->
+<section id="contact" style="position:relative;overflow:hidden;padding:96px 24px">
+  <div style="position:absolute;inset:0;background:var(--cream-dark)"></div>
+  <div class="organic-shape organic-sage float-slow" style="position:absolute;left:-160px;top:40px;width:400px;height:400px"></div>
+  <div class="organic-shape organic-gold float-medium" style="position:absolute;right:-128px;bottom:0;width:450px;height:450px"></div>
+
+  <div style="position:relative;max-width:48rem;margin:0 auto;text-align:center;padding:0 24px">
+    <div class="reveal">
+      <div style="display:inline-flex;align-items:center;gap:8px;border-radius:9999px;background:var(--terracotta-light);padding:8px 16px;margin-bottom:32px">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--terracotta);animation:pulse 2s infinite"></div>
+        <span style="font-size:12px;font-weight:500;color:var(--terracotta)">62% of pro shop calls go unanswered during peak times</span>
+      </div>
+
+      <h2 style="margin-bottom:24px;font-size:clamp(2.2rem,5vw,3rem);font-weight:700;letter-spacing:-0.02em;color:var(--charcoal)">
+        Every missed call is revenue walking out <span style="color:var(--terracotta)">the door</span>
+      </h2>
+      <p style="max-width:560px;margin:0 auto 40px;font-size:1.125rem;line-height:1.65;color:var(--body)">
+        While you&rsquo;re serving golfers at the counter, ClubLine is booking the next four. 2-second response time. 24/7. No salary, no sick days.
+      </p>
+
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <a href="mailto:hello@clublineai.com" class="btn-primary" style="padding:14px 32px;font-size:14px">
+          Book Your Demo
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#pricing" class="btn-secondary" style="padding:12px 32px;font-size:14px">View Pricing</a>
+      </div>
+
+      <div style="margin-top:40px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:24px;font-size:12px;color:var(--muted)">
+        <span>No lock-in contracts</span>
+        <span style="width:4px;height:4px;border-radius:50%;background:var(--border)"></span>
+        <span>30-day money-back guarantee</span>
+        <span style="width:4px;height:4px;border-radius:50%;background:var(--border)"></span>
+        <span>Cancel any time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- FOOTER -->
+<!-- ============================================ -->
+<footer style="border-top:1px solid var(--border);padding:64px 24px">
+  <div style="max-width:80rem;margin:0 auto">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px" id="footerGrid">
+      <div>
+        <a href="#" style="display:inline-block;margin-bottom:16px;text-decoration:none">
+          <span style="font-family:var(--font-display);font-size:1.5rem;color:var(--charcoal)">ClubLine AI</span>
+        </a>
+        <p style="font-size:14px;line-height:1.65;color:var(--body);margin-bottom:16px;max-width:280px">The AI voice receptionist that answers every call, books every tee time, and frees your staff &mdash; 24/7.</p>
+        <p style="font-size:12px;color:var(--muted)">Built in Australia, for Australian golf clubs.</p>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Product</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#features" style="font-size:14px;color:var(--body);text-decoration:none;transition:color 0.2s">AI Voice Agent</a></li>
+          <li><a href="#features" style="font-size:14px;color:var(--body);text-decoration:none;transition:color 0.2s">Tee Time Booking</a></li>
+          <li><a href="#features" style="font-size:14px;color:var(--body);text-decoration:none;transition:color 0.2s">Call Analytics</a></li>
+          <li><a href="#features" style="font-size:14px;color:var(--body);text-decoration:none;transition:color 0.2s">SMS Confirmations</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Company</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#" style="font-size:14px;color:var(--body);text-decoration:none">About</a></li>
+          <li><a href="#pricing" style="font-size:14px;color:var(--body);text-decoration:none">Pricing</a></li>
+          <li><a href="mailto:hello@clublineai.com" style="font-size:14px;color:var(--body);text-decoration:none">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Legal</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#" style="font-size:14px;color:var(--body);text-decoration:none">Privacy Policy</a></li>
+          <li><a href="#" style="font-size:14px;color:var(--body);text-decoration:none">Terms of Service</a></li>
+          <li><a href="#" style="font-size:14px;color:var(--body);text-decoration:none">Data Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);margin-top:56px;padding-top:32px">
+      <p style="font-size:12px;color:var(--muted)">&copy; 2026 ClubLine AI. All rights reserved.</p>
+      <div style="display:flex;gap:24px">
+        <a href="#" style="font-size:12px;color:var(--muted);text-decoration:none">Twitter</a>
+        <a href="#" style="font-size:12px;color:var(--muted);text-decoration:none">LinkedIn</a>
+        <a href="#" style="font-size:12px;color:var(--muted);text-decoration:none">Instagram</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================ -->
+<!-- RESPONSIVE -->
+<!-- ============================================ -->
+<style>
+@media(max-width:968px){
+  #convGrid,#voiceGrid{grid-template-columns:1fr !important}
+  #stepsGrid{grid-template-columns:1fr !important}
+  #onboardGrid{grid-template-columns:1fr 1fr !important}
+  #featuresGrid{grid-template-columns:1fr 1fr !important}
+  #testimonialsGrid{grid-template-columns:1fr !important}
+  #roiGrid{grid-template-columns:1fr !important}
+  #pricingGrid{grid-template-columns:1fr !important}
+  #howStripGrid{flex-direction:column}
+  #footerGrid{grid-template-columns:1fr 1fr !important}
+  #desktopNav{display:none !important}
+  #dashSidebar{display:none !important}
+}
+@media(max-width:640px){
+  #featuresGrid{grid-template-columns:1fr !important}
+  #onboardGrid{grid-template-columns:1fr !important}
+  #footerGrid{grid-template-columns:1fr !important}
+  #statsGrid{grid-template-columns:1fr 1fr !important}
+}
+</style>
+
+<!-- ============================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================ -->
+<script>
+// === NAV SCROLL ===
+const nav=document.getElementById('nav');
+const navInner=document.getElementById('navInner');
+const navLogoSpan=document.querySelector('#navLogo span');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY>60;
+  nav.style.background=s?'rgba(250,248,244,0.95)':'transparent';
+  nav.style.backdropFilter=s?'blur(12px)':'none';
+  nav.style.webkitBackdropFilter=s?'blur(12px)':'none';
+  nav.style.boxShadow=s?'0 1px 6px rgba(0,0,0,0.06)':'none';
+  navInner.style.padding=s?'10px 24px':'16px 24px';
+  navLogoSpan.style.color=s?'var(--charcoal)':'#fff';
+  s?nav.classList.add('nav-scrolled'):nav.classList.remove('nav-scrolled');
+},{passive:true});
+
+// === SCROLL REVEAL ===
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// === TYPEWRITER ===
+const roles=["Receptionist","Tee Time Booker","After-Hours Agent","Member Concierge","Course Assistant"];
+let roleIdx=0,charIdx=0,isDeleting=false;
+function typeRole(){
+  const el=document.getElementById('roleTyper');
+  const current=roles[roleIdx];
+  if(!isDeleting){
+    charIdx++;
+    el.textContent=current.slice(0,charIdx);
+    if(charIdx===current.length){setTimeout(()=>{isDeleting=true;typeRole()},1800);return;}
+  }else{
+    charIdx--;
+    el.textContent=current.slice(0,charIdx);
+    if(charIdx===0){isDeleting=false;roleIdx=(roleIdx+1)%roles.length;}
+  }
+  setTimeout(typeRole,isDeleting?40:80);
+}
+typeRole();
+
+// === HERO CHAT BUBBLES ===
+const heroMsgs=[
+  {role:"ai",text:"Hey! Thanks for calling Mt Derrimut Golf Club. Sorry we missed you \u2014 how can we help?"},
+  {role:"customer",text:"Hi! I\u2019d like to book 18 holes for Saturday, two players."},
+  {role:"ai",text:"I have 8:10am and 9:40am available this Saturday. Which works better?"},
+  {role:"customer",text:"8:10 would be perfect."},
+  {role:"ai",text:"You\u2019re all booked for 8:10am Saturday! I\u2019ll send you a confirmation SMS now. See you on the course!"},
+];
+let heroIdx=0;
+const heroBubbles=document.getElementById('heroBubbles');
+function addHeroBubble(){
+  if(heroIdx>=heroMsgs.length)return;
+  const m=heroMsgs[heroIdx];
+  const isAI=m.role==='ai';
+  const wrap=document.createElement('div');
+  wrap.style.cssText=`display:flex;${isAI?'justify-content:flex-start':'justify-content:flex-end'};opacity:0;transform:translateY(12px);transition:all 0.5s cubic-bezier(0.16,1,0.3,1);margin-bottom:10px`;
+  const inner=document.createElement('div');
+  inner.style.cssText='display:flex;max-width:82%;align-items:end;gap:6px';
+  if(isAI){
+    const icon=document.createElement('div');
+    icon.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="var(--teal)" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+    icon.style.cssText='margin-bottom:10px;flex-shrink:0';
+    inner.appendChild(icon);
+  }
+  const bubble=document.createElement('div');
+  bubble.style.cssText=isAI
+    ?'border-radius:16px;border-top-left-radius:4px;background:var(--teal);color:white;padding:10px 16px;box-shadow:0 4px 12px rgba(122,158,147,0.1)'
+    :'border-radius:16px;border-top-right-radius:4px;background:white;color:var(--charcoal);padding:10px 16px;box-shadow:0 4px 12px rgba(0,0,0,0.06)';
+  bubble.innerHTML='<p style="font-size:13px;line-height:1.55">'+m.text+'</p>';
+  inner.appendChild(bubble);
+  wrap.appendChild(inner);
+  heroBubbles.appendChild(wrap);
+  requestAnimationFrame(()=>{wrap.style.opacity='1';wrap.style.transform='translateY(0)'});
+  heroIdx++;
+  if(heroIdx<heroMsgs.length)setTimeout(addHeroBubble,800);
+}
+setTimeout(addHeroBubble,500);
+
+
+// === LIVE ACTIVITY STRIP ===
+const activityItems=[
+  {icon:'phone',color:'#4ade80',text:'Tee time booked — 8:10am Saturday',time:'3s ago'},
+  {icon:'check',color:'var(--teal)',text:'Call answered — green fee inquiry',time:'18s ago'},
+  {icon:'calendar',color:'var(--terracotta)',text:'4-ball booked — Sunday 7:30am',time:'1m ago'},
+  {icon:'phone',color:'#4ade80',text:'After-hours call handled — membership inquiry',time:'2m ago'},
+  {icon:'msg',color:'var(--gold)',text:'SMS confirmation sent — James C.',time:'3m ago'},
+  {icon:'check',color:'var(--teal)',text:'Function inquiry captured — wedding reception',time:'5m ago'},
+  {icon:'calendar',color:'var(--terracotta)',text:'Twilight round booked — 2 players',time:'6m ago'},
+  {icon:'phone',color:'#4ade80',text:'Call answered — course conditions update',time:'8m ago'},
+  {icon:'msg',color:'var(--gold)',text:'SMS confirmation sent — Emma Z.',time:'10m ago'},
+  {icon:'check',color:'var(--teal)',text:'Tee time booked — 9:40am Wednesday',time:'12m ago'},
+];
+const actIcons={
+  phone:'<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>',
+  check:'<polyline points="20 6 9 17 4 12"/>',
+  calendar:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+  msg:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+};
+const actScroll=document.getElementById('activityScroll');
+[...activityItems,...activityItems].forEach(item=>{
+  const d=document.createElement('div');
+  d.style.cssText='display:flex;align-items:center;gap:10px;flex-shrink:0;white-space:nowrap';
+  d.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${item.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${actIcons[item.icon]}</svg><span style="font-size:0.82rem;font-weight:500;color:rgba(255,255,255,0.85)">${item.text}</span><span style="font-size:0.72rem;color:rgba(255,255,255,0.4)">${item.time}</span>`;
+  actScroll.appendChild(d);
+});
+
+// === STATS ===
+const stats=[
+  {value:15,suffix:'+',label:'Missed calls per day',color:'var(--charcoal)'},
+  {value:343,prefix:'$',suffix:'K',label:'Revenue lost per year',color:'var(--terracotta)'},
+  {value:2,suffix:'s',label:'ClubLine\u2019s response time',color:'var(--teal)'},
+  {value:2000,suffix:'+',label:'Tee times lost per year',color:'var(--teal)'},
+];
+const sg=document.getElementById('statsGrid');
+stats.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.style.cssText=`display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px;${i<stats.length-1?'border-right:1px solid var(--border)':''}`;
+  d.innerHTML=`<p style="font-size:clamp(2rem,4.5vw,3rem);font-weight:700;letter-spacing:-0.02em;color:${s.color}" data-count="${s.value}" data-prefix="${s.prefix||''}" data-suffix="${s.suffix||''}">${s.prefix||''}0${s.suffix||''}</p><p style="margin-top:8px;font-size:14px;color:var(--muted)">${s.label}</p>`;
+  sg.appendChild(d);
+});
+// Counter animation
+const cObs=new IntersectionObserver(es=>{es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  e.target.querySelectorAll('[data-count]').forEach(el=>{
+    const end=parseInt(el.dataset.count),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',dur=1500,t0=performance.now();
+    (function step(now){const p=Math.min((now-t0)/dur,1);el.textContent=pre+Math.round(end*(1-Math.pow(1-p,3)))+suf;if(p<1)requestAnimationFrame(step)})(t0);
+  });
+  cObs.unobserve(e.target);
+})},{threshold:0.3});
+cObs.observe(sg);
+
+// === HOW IT WORKS ===
+const steps=[
+  {num:'01',title:'Golfer calls, ClubLine picks up',desc:'ClubLine answers with a natural AI voice or sends an instant SMS within 2 seconds. No golfer left waiting, day or night.',iconBg:'var(--terracotta-light)',iconColor:'var(--terracotta)',icon:'<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>'},
+  {num:'02',title:'ClubLine has the conversation',desc:'Golf-trained AI chats naturally via voice or SMS \u2014 answering questions, understanding requests, qualifying the booking.',iconBg:'var(--teal-light)',iconColor:'var(--teal)',icon:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>'},
+  {num:'03',title:'You get a booked tee time',desc:'Name, players, preferred time \u2014 all captured and booked. SMS confirmation sent. You just run the club.',iconBg:'var(--sage-light)',iconColor:'var(--sage)',icon:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 16l2 2 4-4"/>'},
+];
+const stepsGrid=document.getElementById('stepsGrid');
+steps.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='reveal tilt-card card-hover';
+  d.style.cssText=`border-radius:16px;border:1px solid var(--border);background:white;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition-delay:${i*150}ms`;
+  d.innerHTML=`<p style="margin-bottom:24px;font-size:12px;font-weight:700;letter-spacing:0.2em;color:var(--muted)">STEP ${s.num}</p><div style="margin-bottom:24px;width:56px;height:56px;border-radius:50%;background:${s.iconBg};display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${s.iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg></div><h3 style="margin-bottom:12px;font-size:1.125rem;font-weight:700;color:var(--charcoal)">${s.title}</h3><p style="font-size:14px;line-height:1.65;color:var(--body)">${s.desc}</p>`;
+  stepsGrid.appendChild(d);
+  obs.observe(d);
+});
+
+// === CONVERSATION DEMO ===
+const scenarios={
+  'missed-call':{label:'Missed Call',status:'Responding to missed call',messages:[
+    {role:'ai',text:"Hey! Thanks for calling Mt Derrimut Golf Club. Sorry we missed you \u2014 how can we help?"},
+    {role:'customer',text:"Hi, I\u2019d like to book a round for Saturday. Two players, 18 holes."},
+    {role:'ai',text:"Great choice! We\u2019ve got 8:10am and 10:20am available this Saturday. Which works better?"},
+    {role:'customer',text:"10:20 would be great!"},
+    {role:'ai',text:"What\u2019s your name so I can lock that in?"},
+    {role:'customer',text:"James Cooper. 10:20 please"},
+    {role:'ai',text:"You\u2019re all booked for 10:20am Saturday, James! Two players, 18 holes. Confirmation text incoming. See you on the course!"},
+  ]},
+  'web-chat':{label:'Web Chat',status:'Website visitor',messages:[
+    {role:'ai',text:"Hi there! Welcome to Mt Derrimut Golf Club. How can I help?"},
+    {role:'customer',text:"How much is a round on the weekend?"},
+    {role:'ai',text:"Great question! Weekend 18-hole green fees are $65 per player, or $45 for twilight after 2pm. Want to book a time?"},
+    {role:'customer',text:"Twilight sounds good. This Sunday?"},
+    {role:'ai',text:"Sunday twilight \u2014 I\u2019ve got 2:20pm or 3:10pm. Can I grab your name and number?"},
+    {role:'customer',text:"Emma Zhao, 0412 345 678. 2:20pm please!"},
+    {role:'ai',text:"Locked in, Emma! Sunday 2:20pm twilight. Confirmation text on the way. Enjoy your round!"},
+  ]},
+  'after-hours':{label:'After Hours',status:'After-hours call \u2022 9:47pm',messages:[
+    {role:'ai',text:"Good evening, Mt Derrimut Golf Club. We\u2019re closed right now, but I can help you book a tee time!"},
+    {role:'customer',text:"Oh great! I need to book for tomorrow morning, 4 players."},
+    {role:'ai',text:"Tomorrow morning for 4 \u2014 I\u2019ve got 7:30am and 8:50am. Which do you prefer?"},
+    {role:'customer',text:"7:30 please!"},
+    {role:'ai',text:"Done! 7:30am tomorrow, 4 players. I\u2019ll text you confirmation now. Have a great round!"},
+  ]},
+};
+let activeScenario='missed-call',chatVisibleCount=0,chatShowTyping=false;
+const chatMessages=document.getElementById('chatMessages');
+const chatStatus=document.getElementById('chatStatus');
+const scenarioTabs=document.getElementById('scenarioTabs');
+
+function renderTabs(){
+  scenarioTabs.innerHTML='';
+  Object.keys(scenarios).forEach(key=>{
+    const btn=document.createElement('button');
+    const isActive=key===activeScenario;
+    btn.style.cssText=`display:flex;align-items:center;gap:8px;border-radius:9999px;padding:10px 20px;font-size:14px;font-weight:600;transition:all 0.3s;border:${isActive?'none':'1px solid var(--border)'};background:${isActive?'var(--charcoal)':'transparent'};color:${isActive?'white':'var(--body)'};cursor:pointer;font-family:var(--font-sans)`;
+    btn.textContent=scenarios[key].label;
+    btn.onclick=()=>{activeScenario=key;chatVisibleCount=0;chatShowTyping=false;renderTabs();renderChat()};
+    scenarioTabs.appendChild(btn);
+  });
+}
+
+function renderChat(){
+  chatMessages.innerHTML='';
+  chatStatus.textContent=scenarios[activeScenario].status;
+  const msgs=scenarios[activeScenario].messages;
+  for(let i=0;i<chatVisibleCount&&i<msgs.length;i++){
+    const m=msgs[i];
+    const isAI=m.role==='ai';
+    const row=document.createElement('div');
+    row.style.cssText=`display:flex;align-items:end;gap:8px;${isAI?'flex-direction:row':'flex-direction:row-reverse'}`;
+    row.className=isAI?'msg-left':'msg-right';
+    if(isAI){
+      const icon=document.createElement('div');
+      icon.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+      icon.style.cssText='margin-bottom:4px;flex-shrink:0';
+      row.appendChild(icon);
+    }
+    const bubble=document.createElement('div');
+    bubble.style.cssText=isAI
+      ?'max-width:84%;border-radius:16px;border-top-left-radius:4px;background:var(--teal);color:white;padding:12px 16px'
+      :'max-width:84%;border-radius:16px;border-top-right-radius:4px;background:var(--cream-dark);color:var(--charcoal);padding:12px 16px';
+    bubble.innerHTML='<p style="font-size:13px;line-height:1.55">'+m.text+'</p>';
+    row.appendChild(bubble);
+    chatMessages.appendChild(row);
+  }
+  // Typing indicator
+  if(chatShowTyping&&chatVisibleCount<msgs.length){
+    const typing=document.createElement('div');
+    typing.style.cssText='display:flex;align-items:start';
+    typing.innerHTML='<div style="display:flex;align-items:center;gap:6px;border-radius:16px;border-top-left-radius:4px;background:rgba(122,158,147,0.1);padding:12px 16px"><span class="typing-dot" style="width:6px;height:6px;border-radius:50%;background:var(--teal)"></span><span class="typing-dot" style="width:6px;height:6px;border-radius:50%;background:var(--teal)"></span><span class="typing-dot" style="width:6px;height:6px;border-radius:50%;background:var(--teal)"></span></div>';
+    chatMessages.appendChild(typing);
+  }
+  chatMessages.scrollTop=chatMessages.scrollHeight;
+}
+
+function advanceChat(){
+  const msgs=scenarios[activeScenario].messages;
+  if(chatVisibleCount>=msgs.length)return;
+  chatShowTyping=true;renderChat();
+  setTimeout(()=>{chatShowTyping=false;chatVisibleCount++;renderChat();setTimeout(advanceChat,chatVisibleCount===0?300:400)},chatVisibleCount===0?500:1000);
+}
+
+// Start on scroll into view
+const convSection=document.querySelector('.gradient-warm');
+const convObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){advanceChat();convObs.unobserve(e.target)}})},{threshold:0.3});
+convObs.observe(convSection);
+renderTabs();renderChat();
+
+// === VOICE AGENT ===
+const voiceBullets=document.getElementById('voiceBullets');
+["Trained on your club\u2019s policies, pricing & events","Custom voice & personality \u2014 not a generic bot","Books directly into your tee sheet","Handles after-hours & overflow \u2014 transfers when needed"].forEach(t=>{
+  const d=document.createElement('div');
+  d.style.cssText='display:flex;align-items:flex-start;gap:12px';
+  d.innerHTML=`<div style="margin-top:2px;flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><p style="font-size:14px;color:rgba(255,255,255,0.6)">${t}</p>`;
+  voiceBullets.appendChild(d);
+});
+
+// Waveform
+const wf=document.getElementById('waveform');
+for(let i=0;i<48;i++){const b=document.createElement('div');b.className='waveform-bar';b.style.cssText=`width:3px;border-radius:2px;background:var(--teal);height:100%;animation-delay:${((i*7+13)%20)/10}s;animation-duration:${((i*11+3)%16)/20+0.8}s`;wf.appendChild(b)}
+
+// Live timer
+let secs=0;const lt=document.getElementById('liveTime');
+const vObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){setInterval(()=>{secs++;lt.textContent=Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0')},1000);vObs.unobserve(e.target)}})},{threshold:0.3});
+vObs.observe(document.querySelector('[style*="background:var(--charcoal)"]'));
+
+// Live transcript
+const tLines=[
+  {speaker:'ai',text:"Good morning, Mt Derrimut Golf Club. This is ClubLine, how can I help?"},
+  {speaker:'golfer',text:"I\u2019d like to book a tee time for next Saturday."},
+  {speaker:'ai',text:"I have 8:10am and 10:40am available. Which works better?"},
+  {speaker:'golfer',text:"10:40 would be perfect."},
+];
+let tIdx=0;const tEl=document.getElementById('liveTranscript');
+function addTranscript(){
+  if(tIdx>=tLines.length)return;
+  const l=tLines[tIdx];
+  const p=document.createElement('p');
+  p.className='bubble-in';
+  p.style.cssText=`font-size:13px;line-height:1.55;color:${l.speaker==='ai'?'var(--teal)':'rgba(255,255,255,0.7)'}`;
+  p.innerHTML='<span style="font-weight:600">'+(l.speaker==='ai'?'ClubLine: ':'Golfer: ')+'</span>'+l.text;
+  tEl.appendChild(p);
+  tIdx++;
+  if(tIdx<tLines.length)setTimeout(addTranscript,2500);
+}
+const tObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){setTimeout(addTranscript,2500);tObs.unobserve(e.target)}})},{threshold:0.4});
+tObs.observe(tEl);
+
+// === FEATURES ===
+const accentCycle=[
+  {bg:'var(--terracotta-light)',text:'var(--terracotta)'},
+  {bg:'var(--teal-light)',text:'var(--teal)'},
+  {bg:'var(--sage-light)',text:'var(--sage)'},
+  {bg:'var(--gold-light)',text:'var(--gold)'},
+  {bg:'var(--blue-muted-light)',text:'var(--blue-muted)'},
+];
+const features=[
+  {icon:'phone',title:'AI Voice Receptionist',desc:'ClubLine answers calls with a natural AI voice \u2014 books tee times, answers FAQs, and transfers to staff when needed.',span:2,variant:'dark'},
+  {icon:'zap',title:'Instant Response',desc:'Every missed call triggers an instant SMS within 2 seconds. Golfers never feel ignored.',variant:'stat'},
+  {icon:'brain',title:'Golf-Trained AI',desc:'Understands tee time requests, green fees, course conditions, competition days, and member queries naturally.'},
+  {icon:'globe',title:'Web Chat Widget',desc:'One line of code adds a chat widget to your site. Same smart AI catching bookings from visitors.'},
+  {icon:'calendar',title:'Tee Time Booking',desc:'Qualifies the golfer, checks availability, captures preferred time, and books directly into your tee sheet.'},
+  {icon:'repeat',title:'Smart Follow-Ups',desc:'Automated follow-ups with personalised messages that bring golfers back for their next round.'},
+  {icon:'star',title:'Feedback Collection',desc:'Automated requests after rounds with intelligent follow-up. Build your online reputation effortlessly.',span:2,variant:'accent'},
+  {icon:'bell',title:'Real-Time Notifications',desc:'SMS and email alerts when bookings are made. Full transcript included. Respects quiet hours.'},
+  {icon:'bar',title:'Analytics Dashboard',desc:'Calls, bookings, revenue recovered, busiest hours, and peak demand \u2014 all in one view.',span:2,variant:'gradient'},
+  {icon:'msg',title:'SMS Confirmations',desc:'Instant booking confirmation via SMS. Reduces no-shows and gives golfers a reference to check.'},
+  {icon:'clock',title:'24/7 Availability',desc:'After-hours, weekends, public holidays \u2014 every golfer gets an instant, intelligent response.'},
+  {icon:'shield',title:'Golf Playbooks',desc:'Competition day handling, twilight upsells, membership inquiries, function bookings \u2014 industry intelligence built in.'},
+];
+const iconPaths={
+  phone:'<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>',
+  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  brain:'<path d="M9.5 2A5.5 5.5 0 004 7.5a5.5 5.5 0 002.1 4.3A5.5 5.5 0 004 16a5.5 5.5 0 005.5 5.5c1.5 0 2.9-.6 3.9-1.6M14.5 2A5.5 5.5 0 0120 7.5a5.5 5.5 0 01-2.1 4.3A5.5 5.5 0 0120 16a5.5 5.5 0 01-5.5 5.5"/>',
+  globe:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>',
+  calendar:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 16l2 2 4-4"/>',
+  repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/>',
+  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  bell:'<path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>',
+  bar:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  msg:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+};
+const fg=document.getElementById('featuresGrid');
+let stdIdx=0;
+features.forEach((f,i)=>{
+  const isDark=f.variant==='dark',isAccent=f.variant==='accent',isStat=f.variant==='stat',isGradient=f.variant==='gradient',isHero=!!f.variant;
+  let accent=accentCycle[0];
+  if(!isHero){accent=accentCycle[stdIdx%accentCycle.length];stdIdx++}
+  const d=document.createElement('div');
+  d.className='reveal tilt-card card-hover';
+  d.style.cssText=`position:relative;overflow:hidden;border-radius:16px;border:1px solid ${isDark?'rgba(255,255,255,0.05)':isAccent?'rgba(197,165,90,0.2)':isStat?'rgba(184,115,51,0.15)':isGradient?'rgba(122,158,147,0.15)':'var(--border)'};background:${isDark?'var(--charcoal)':isAccent?'var(--gold-light)':isStat?'var(--terracotta-light)':isGradient?'var(--teal-light)':'white'};padding:${isDark||isAccent||isGradient?'28px 32px':'24px'};${f.span===2?'grid-column:span 2':''}`;
+  if(i>0)d.style.transitionDelay=Math.min(i*0.05,0.3)+'s';
+  const iconBg=isDark?'rgba(255,255,255,0.1)':isAccent?'rgba(197,165,90,0.15)':isStat?'rgba(184,115,51,0.15)':isGradient?'rgba(122,158,147,0.15)':accent.bg;
+  const iconColor=isDark?'var(--teal)':isAccent?'var(--gold)':isStat?'var(--terracotta)':isGradient?'var(--teal)':accent.text;
+  d.innerHTML=`<div style="position:relative;z-index:10;${f.span===2?'max-width:400px':''}"><div style="margin-bottom:16px;width:40px;height:40px;border-radius:12px;background:${iconBg};display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconPaths[f.icon]}</svg></div><h3 style="margin-bottom:8px;font-size:1rem;font-weight:600;color:${isDark?'white':'var(--charcoal)'}">${f.title}</h3><p style="font-size:14px;line-height:1.65;color:${isDark?'rgba(255,255,255,0.6)':'var(--body)'}">${f.desc}</p></div>`;
+  // Decorative elements
+  if(isStat){d.innerHTML+='<div style="pointer-events:none;position:absolute;right:20px;bottom:12px"><p style="font-size:3rem;font-weight:700;color:rgba(184,115,51,0.15)">2s</p></div>'}
+  fg.appendChild(d);
+  obs.observe(d);
+});
+
+
+// === ROI CALCULATOR ===
+// Assumptions (conservative):
+// - 52% of missed calls are genuine booking inquiries (rest: existing members, spam, repeat calls)
+// - ClubLine recovers 45% of those (texts back → conversation → books → shows up)
+// - Revenue per booking = green fee × avg players per group
+// - ClubLine cost = $499/mo ($5,988/yr)
+const BOOKING_INQUIRY_RATE=0.38;  // % of missed calls that are real booking attempts
+const RECOVERY_RATE=0.45;         // % of those ClubLine converts
+const CLUBLINE_COST=499*12;       // annual cost
+
+const callsSlider=document.getElementById('callsSlider');
+const feeSlider=document.getElementById('feeSlider');
+const playersSlider=document.getElementById('playersSlider');
+
+function updateSliderUI(slider,fillEl,thumbEl,min,max){
+  const val=parseInt(slider.value);
+  const pct=((val-min)/(max-min))*100;
+  fillEl.style.width=pct+'%';
+  thumbEl.style.left=pct+'%';
+}
+
+function updateROI(){
+  const calls=parseInt(callsSlider.value);
+  const fee=parseInt(feeSlider.value);
+  const players=parseInt(playersSlider.value);
+
+  // Update slider UIs
+  updateSliderUI(callsSlider,document.getElementById('callsFill'),document.getElementById('callsThumb'),2,60);
+  updateSliderUI(feeSlider,document.getElementById('feeFill'),document.getElementById('feeThumb'),25,150);
+  updateSliderUI(playersSlider,document.getElementById('playersFill'),document.getElementById('playersThumb'),1,4);
+
+  // Update display values
+  document.getElementById('callsVal').textContent=calls;
+  document.getElementById('feeVal').textContent=fee;
+  document.getElementById('playersVal').textContent=players;
+
+  // Core math (calls is per day × 365 days)
+  const totalMissedYear=calls*365;
+  const bookingInquiries=Math.round(totalMissedYear*BOOKING_INQUIRY_RATE);
+  const revenuePerBooking=fee*players;
+  const totalLost=bookingInquiries*revenuePerBooking;
+  const bookingsRecovered=Math.round(bookingInquiries*RECOVERY_RATE);
+  const revenueRecovered=bookingsRecovered*revenuePerBooking;
+  const net=revenueRecovered-CLUBLINE_COST;
+  const roiX=Math.max(Math.round((revenueRecovered/CLUBLINE_COST)*10)/10,0);
+  const paybackBookings=Math.ceil(499/revenuePerBooking);
+
+  // Update left panel
+  document.getElementById('lostVal').innerHTML='$'+totalLost.toLocaleString()+'<span style="font-size:14px;font-weight:400;color:var(--muted)">/year</span>';
+  document.getElementById('lostBreakdown').textContent='That\u2019s ~'+bookingInquiries.toLocaleString()+' lost bookings going to voicemail';
+
+  // Update right panel
+  document.getElementById('recoveredVal').textContent='$'+revenueRecovered.toLocaleString();
+  document.getElementById('roiBarFill').style.width=Math.min((revenueRecovered/totalLost)*100,100)+'%';
+  document.getElementById('roiPct').textContent=Math.round((revenueRecovered/(totalLost||1))*100)+'% recovered';
+  document.getElementById('bookingsVal').textContent=bookingsRecovered.toLocaleString();
+  document.getElementById('roiXVal').textContent=roiX+'x';
+  document.getElementById('netVal').textContent='$'+Math.round(Math.max(net,0)/12).toLocaleString();
+  document.getElementById('paybackNote').textContent='Pays for itself with just '+paybackBookings+' recovered booking'+(paybackBookings!==1?'s':'')+' per month.';
+
+  // Math breakdown
+  document.getElementById('mathBreakdown').innerHTML=[
+    mkRow(calls+' missed calls/day','× 365 days',totalMissedYear.toLocaleString()+' missed/yr'),
+    mkRow(totalMissedYear.toLocaleString()+' missed calls','× 38% are real inquiries',bookingInquiries.toLocaleString()+' potential bookings'),
+    mkRow('$'+fee+' green fee','× '+players+' players','$'+revenuePerBooking.toLocaleString()+' per booking'),
+    mkRow(bookingInquiries.toLocaleString()+' lost bookings','× $'+revenuePerBooking,'<span style="color:var(--terracotta);font-weight:600">$'+totalLost.toLocaleString()+' lost/yr</span>'),
+    '<div style="height:1px;background:var(--border);margin:4px 0"></div>',
+    mkRow('ClubLine recovers 45%',bookingsRecovered+' bookings','<span style="color:var(--teal);font-weight:600">$'+revenueRecovered.toLocaleString()+' recovered</span>'),
+  ].join('');
+}
+
+function mkRow(a,b,c){
+  return '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="color:var(--muted)">'+a+'</span><span style="color:var(--muted);font-size:12px">'+b+'</span><span style="font-weight:500;color:var(--charcoal)">'+c+'</span></div>';
+}
+
+callsSlider.addEventListener('input',updateROI);
+feeSlider.addEventListener('input',updateROI);
+playersSlider.addEventListener('input',updateROI);
+updateROI();
+
+// === PRICING ===
+const checkIcon='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+// Pro features
+const proFeatures=['AI voice receptionist','Dedicated phone number','Inbound call answering &amp; SMS/email follow-up','Pre-pay booking links (30-min expiry)','Tee sheet integration','Call &amp; booking analytics dashboard','Real-time notifications','Auto-cancel unpaid bookings','Priority support'];
+const pf=document.getElementById('proFeatures');
+proFeatures.forEach(f=>{pf.innerHTML+='<li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--body)"><span style="flex-shrink:0;margin-top:3px">'+checkIcon+'</span>'+f+'</li>'});
+
+// Enterprise features
+const entFeatures=['Everything in ClubLine Pro','Multiple courses / locations','Custom AI playbooks &amp; scripts','Custom automations (follow-ups, reviews, campaigns)','PMS / tee sheet API integration','White-label options','Dedicated account manager','SLA guarantee','Volume usage discounts'];
+const ef=document.getElementById('entFeatures');
+entFeatures.forEach(f=>{ef.innerHTML+='<li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--body)"><span style="flex-shrink:0;margin-top:3px">'+checkIcon+'</span>'+f+'</li>'});
+
+// Usage calculator
+// Pass-through costs (no markup):
+// - Phone number: $4/mo
+// - Inbound call (AI voice): $0.30/min, avg ~2.5 min/call
+// - SMS (AU): $0.07/msg, ~1.5 msgs per call (confirmation + reminder)
+// - Email: bundled free
+const PHONE_NUMBER_COST=5;
+const COST_PER_MIN=0.30;     // AI voice per minute
+const AVG_CALL_MIN=2.5;      // average call length
+const SMS_PER_CALL=1.5;
+const SMS_COST=0.07;
+const EMAIL_COST=0;           // bundled free
+
+const usageSlider=document.getElementById('usageCallsSlider');
+function updateUsage(){
+  const calls=parseInt(usageSlider.value);
+  const pct=((calls-50)/(1500-50))*100;
+  document.getElementById('usageCallsFill').style.width=pct+'%';
+  document.getElementById('usageCallsVal').textContent=calls;
+
+  const totalMinutes=Math.round(calls*AVG_CALL_MIN);
+  const voiceCost=Math.round(totalMinutes*COST_PER_MIN*100)/100;
+  const smsCost=Math.round(calls*SMS_PER_CALL*SMS_COST*100)/100;
+  const totalUsage=PHONE_NUMBER_COST+voiceCost+smsCost;
+
+  document.getElementById('usageLineItems').innerHTML=[
+    usageLine('Phone number','1 dedicated AU number','$'+PHONE_NUMBER_COST.toFixed(2)),
+    usageLine('AI voice','~'+totalMinutes+' min × $0.30/min','$'+voiceCost.toFixed(2)),
+    usageLine('SMS','~'+Math.round(calls*SMS_PER_CALL)+' msgs × $0.07','$'+smsCost.toFixed(2)),
+    usageLine('Email','Included','$0.00'),
+  ].join('');
+
+  document.getElementById('usageTotalVal').textContent='$499 + $'+Math.round(totalUsage);
+}
+
+function usageLine(label,detail,cost){
+  return '<div style="display:flex;align-items:center;justify-content:space-between"><div><span style="font-weight:500;color:var(--charcoal)">'+label+'</span> <span style="color:var(--muted)">'+detail+'</span></div><span style="font-weight:600;color:var(--charcoal)">'+cost+'</span></div>';
+}
+
+usageSlider.addEventListener('input',updateUsage);
+updateUsage();
+
+// Observe pricing cards
+document.querySelectorAll('#pricingGrid > div').forEach(el=>obs.observe(el));
+
+// Observe onboarding cards
+document.querySelectorAll('#onboardGrid > div').forEach(el=>obs.observe(el));
+
+// === FAQ ===
+const faqs=[
+  {q:"Will it sound robotic?",a:"Not at all. ClubLine uses advanced voice AI trained for golf conversations. Natural Australian English, understands context, has genuine personality. Callers regularly think they\u2019re speaking with a real person."},
+  {q:"What about our older members?",a:"They just call the same number and talk naturally. No apps, no websites, no new technology to learn. It\u2019s the most natural interface there is \u2014 a phone call."},
+  {q:"Can it handle complex requests?",a:"For anything it can\u2019t handle, ClubLine seamlessly transfers to your staff with full context. The caller never has to repeat themselves."},
+  {q:"What if the system goes down?",a:"Built-in failover routes calls directly to your staff phone line. Your golfers will never hit a dead end."},
+  {q:"Is our member data secure?",a:"Enterprise-grade security with row-level isolation. Each club\u2019s data is completely separated. Encrypted in transit and at rest. Australian data privacy compliant."},
+  {q:"How long does setup take?",a:"Most clubs are live within 1\u20132 weeks. We handle all configuration \u2014 you just review and approve before going live."},
+  {q:"We already have online booking. Why this?",a:"Only 30\u201340% of golfers book online. The rest call. Online booking doesn\u2019t solve the phone problem, especially for the older demographic at most golf clubs."},
+  {q:"Can we cancel any time?",a:"Yes. No lock-in contracts. Cancel from your dashboard. Plus a 30-day money-back guarantee \u2014 if ClubLine doesn\u2019t help, full refund."},
+];
+const fc=document.getElementById('faqCard');
+faqs.forEach(f=>{
+  const item=document.createElement('div');
+  item.style.cssText='border-bottom:1px solid var(--border)';
+  item.innerHTML=`<button style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 0;text-align:left;background:none;border:none;cursor:pointer;font-size:1rem;font-weight:600;color:var(--charcoal);font-family:var(--font-sans);transition:color 0.2s" onclick="this.parentElement.classList.toggle('open')"><span style="padding-right:16px">${f.q}</span><svg class="faq-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--muted);transition:transform 0.3s,color 0.3s"><polyline points="6 9 12 15 18 9"/></svg></button><div class="faq-answer" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.3s"><div style="overflow:hidden"><p style="font-size:14px;line-height:1.7;color:var(--body);padding-bottom:20px">${f.a}</p></div></div>`;
+  fc.appendChild(item);
+});
+// FAQ toggle styles
+const style=document.createElement('style');
+style.textContent='.open .faq-chev{transform:rotate(180deg);color:var(--terracotta)!important}.open .faq-answer{grid-template-rows:1fr!important}';
+document.head.appendChild(style);
+
+// === SMOOTH SCROLL ===
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
+</script>
+</body>
+</html>
